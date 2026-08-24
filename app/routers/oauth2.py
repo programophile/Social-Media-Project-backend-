@@ -9,6 +9,8 @@ from .. import schemas,database,models
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from ..config import settings
+
+
 oauth2_scheme=OAuth2PasswordBearer(tokenUrl='login')
 
 #secret key

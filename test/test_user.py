@@ -26,7 +26,7 @@ def test_create_user(client):
 
     assert response.status_code == 201
     assert response.json()["email"] == "sad@gmail.com"
-def test_login_user(client, session,test_user):
+def test_login_user(client, test_user):
     response=client.post("/login",data={
             "username": test_user['email'],
             "password": test_user['password']
@@ -38,3 +38,18 @@ def test_login_user(client, session,test_user):
     assert id==test_user['id']
     assert login_res.token_type=="bearer"
     assert response.status_code==200
+@pytest.mark.parametrize("email,password,status_code",[
+    ("wrongramil@gmail.com","password123",403),
+    ("sad@gmail.com","lkdjlkj",403),
+    (None,"password123",422),
+    ("sad@gmail.com",None,422)
+
+])
+
+def test_incorrect_login(client, test_user,email,password,status_code):
+    res= client.post("/login", data={
+        "username": email,
+        "password": password
+    })
+    assert res.status_code==status_code
+    
