@@ -80,16 +80,38 @@ def authorized_client(token,client):
     return client
 
 @pytest.fixture
-def test_posts(test_user,session):
+def test_posts(test_user, session):
     posts_data = [
-        {"title": "first title", "content": "first content", "owner_id": test_user['id']},
-        {"title": "second title", "content": "second content", "owner_id": test_user['id']},
-        {"title": "third title", "content": "third content", "owner_id": test_user['id']}
+        {
+            "title": "first title",
+            "content": "first content",
+            "owner_id": test_user["id"]
+        },
+        {
+            "title": "second title",
+            "content": "second content",
+            "owner_id": test_user["id"]
+        },
+        {
+            "title": "third title",
+            "content": "third content",
+            "owner_id": test_user["id"]
+        }
     ]
-    session.add_all([models.Post([models.Post(title=post["title"], content=post["content"], owner_id=post["owner_id"]) for post in posts_data])])
+
+    posts = [
+        models.Post(
+            title=post["title"],
+            content=post["content"],
+            owner_id=post["owner_id"]
+        )
+        for post in posts_data
+    ]
+
+    session.add_all(posts)
     session.commit()
-    post=session.query(models.Post).all()
-    return post
+
+    return session.query(models.Post).all()
 
     # def create_post_model(post):
     #     return models.Post(**post)

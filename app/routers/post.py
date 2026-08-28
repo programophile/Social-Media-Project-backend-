@@ -61,7 +61,7 @@ def delete_post(id: int,db: Session=Depends(get_db),current_user: int = Depends(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,detail="Post not found"
         )
-    if delete_post.owner_id!=current_user.id:
+    if deleted_post.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to  perform this")
     db.delete(deleted_post)
     db.commit()
