@@ -7,6 +7,32 @@ on:
 
 jobs:
     build:
+        environment: 
+            name: Testing
+        env:
+
+            DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
+            DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+            DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+            DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+            DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
+            ALGORITHM: ${{ secrets.ALGORITHM }}
+            ACCESS_TOKEN_EXPIRE_TIME: ${{ secrets.ACCESS_TOKEN_EXPIRE_TIME }}
+        services:
+            postgres:
+                image: postgres:15
+                env:
+                    POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+                    POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+                    POSTGRES_DB: ${{ secrets.POSTGRES_DB }}_test
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
