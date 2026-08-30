@@ -64,6 +64,19 @@ jobs:
                 file: ./Dockerfile
                 push: true
                 tags: programophile/fastapi:latest
-                
+    # deploy:
+    #     needs: build
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - name: Checkout code
+    #           uses: actions/checkout@v3
+    #         - name: Set up SSH
+    #           uses: webfactory/ssh-agent@v0.5.4
+    #           with:
+    #               ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #         - name: Copy docker-compose-prod.yml to server
+    #           run: scp -o StrictHostKeyChecking=no docker-compose-prod.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/docker-compose-prod.yml
+    #         - name: Deploy to server
+    #           run: ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "docker pull programophile/fastapi:latest && docker-compose -f /home/${{ secrets.SERVER_USER }}/docker-compose-prod.yml up -d"
 
 
